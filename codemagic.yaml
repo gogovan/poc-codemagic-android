@@ -3,3 +3,7 @@ workflows:
     name: Hello world workflow
     scripts:
       - echo "Hello World!"
+  daily-trunk:
+    name: Daily trunk build
+    scripts:
+      - echo "Daily trunk build success!"
