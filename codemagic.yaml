@@ -52,7 +52,7 @@ workflows:
       - *echo_build_info
       - name: Build Android APK
         working_directory: android
-        script: ./gradlew assembleRelease
+        script: ./gradlew assembleDebug
       - name: Build finished successfully
         script: touch ~/SUCCESS
       - script: |
