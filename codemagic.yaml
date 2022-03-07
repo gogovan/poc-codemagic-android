@@ -27,15 +27,53 @@ workflows:
   build-PR:
     name: PR build
     instance_type: linux
+    triggering:
+      events:
+        - pull_request
+      branch_patterns:
+        - pattern: '*'
+          include: true
+          source: true
+      cancel_previous_builds: true
     environment:
       groups:
         - keystore_credentials
       vars:
         PUBLIC_ENV_VAR: "value here"
       java: 11
+    cache:
+      cache_paths:
+        - ~/.gradle/caches
     scripts:
       - &echo_build_info
         name: Script name
         script: echo "PR build success!"
       - *echo_build_info
       - *echo_build_info
+#      - name: Build Android APK
+#        working_directory: android
+#        script: ./gradlew assembleRelease
+      - name: Build finished successfully
+        script: touch ~/SUCCESS
+      - script: |
+          apkPath=$(find build -name "*.apk" | head -1)
+          if [[ -z ${apkPath} ]]
+          then
+            echo "No .apk were found"
+          else
+            echo "Publishing .apk artifacts"
+          fi
+    artifacts:
+      - app/build/outputs/**/**/*.apk
+    publishing:
+      scripts:
+        - name: Report build status
+          script: |
+            if [ -a "~/SUCCESS" ] ; then
+               echo "build success"
+            else
+               echo "build fail"
+            fi
+      email:
+        recipients:
+          - ivo.wu@gogotech.hk
