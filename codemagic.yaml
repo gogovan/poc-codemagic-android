@@ -7,3 +7,24 @@ workflows:
     name: Daily trunk build
     scripts:
       - echo "Daily trunk build success!"
+  print-env:
+    name: Print env variables
+    scripts:
+      - #!/bin/sh
+        set -ex
+        printenv
+  build-PR:
+    name: PR build
+    instance_type: linux
+    environment:
+      groups:
+        - keystore_credentials
+      vars:
+        PUBLIC_ENV_VAR: "value here"
+      java: 11
+    scripts:
+      - &echo_build_info
+        name: Script name
+        script: echo "PR build success!"
+      - *echo_build_info
+      - *echo_build_info
