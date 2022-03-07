@@ -15,6 +15,15 @@ workflows:
           #!/bin/sh
           set -ex
           printenv
+  set-env-runtime:
+    name: Setting environment variables during the build
+    scripts:
+      - name: set env var
+        script: |
+          echo "KEY=test value" >> $CM_ENV
+      - name: use env var
+        script: |
+          echo $KEY
   build-PR:
     name: PR build
     instance_type: linux
