@@ -10,9 +10,11 @@ workflows:
   print-env:
     name: Print env variables
     scripts:
-      - #!/bin/sh
-        set -ex
-        printenv
+      - name: print env script
+        script: |
+          #!/bin/sh
+          set -ex
+          printenv
   build-PR:
     name: PR build
     instance_type: linux
