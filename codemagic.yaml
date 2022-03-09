@@ -50,9 +50,8 @@ workflows:
         script: echo "PR build success!"
       - *echo_build_info
       - *echo_build_info
-#      - name: Build Android APK
-#        working_directory: android
-#        script: ./gradlew assembleRelease
+      - name: Build Android APK
+        script: ./gradlew assembleDebug
       - name: Build finished successfully
         script: touch ~/SUCCESS
       - script: |
@@ -64,7 +63,7 @@ workflows:
             echo "Publishing .apk artifacts"
           fi
     artifacts:
-      - app/build/outputs/**/**/*.apk
+      - app/build/outputs/**/*.apk
     publishing:
       scripts:
         - name: Report build status
